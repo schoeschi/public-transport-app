@@ -4,7 +4,7 @@
 	import { TrainFront, TrainFrontTunnel } from '@lucide/svelte';
 </script>
 
-<ButtonGroup.Root class="w-xs">
+<ButtonGroup.Root class="w-full">
 	<Button class="flex-1"><TrainFront /> Departures</Button>
 	<Button variant="secondary" class="flex-1 cursor-not-allowed"
 		><TrainFrontTunnel /> Arrivals</Button
