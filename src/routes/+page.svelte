@@ -97,7 +97,7 @@
 			<span>Last updated: {currentTimeAsString}</span>
 
 			{#each result as departure}
-				<Alert.Root class="w-sm text-sm sm:text-base">
+				<Alert.Root class="w-sm max-w-full text-sm sm:text-base">
 					<Alert.Title
 						class="flex flex-col flex-row items-center justify-between gap-1 text-base sm:text-lg"
 						><span clas="flex items-center">
@@ -125,11 +125,14 @@
 		{:else}
 			{#each Array.from({ length: limit }) as _, i}
 				<Alert.Root class="w-full text-sm sm:text-base">
-					<Alert.Title class="flex gap-3"><Skeleton class="h-4 w-3/4 rounded-md" /></Alert.Title>
+					<Alert.Title class="flex gap-3"
+						><Skeleton class="h-3 w-9 rounded-md" />
+						<Skeleton class="h-3 w-36 rounded-md" /></Alert.Title
+					>
 					<Alert.Description class="flex justify-between pt-2">
-						<span><Skeleton class="h-3 w-1/4 rounded-md" /></span>
+						<span><Skeleton class="h-3 w-12 rounded-md" /></span>
 						<span>
-							<Skeleton class="h-3 w-1/3 rounded-md" />
+							<Skeleton class="h-3 w-24 rounded-md" />
 						</span>
 					</Alert.Description>
 				</Alert.Root>
