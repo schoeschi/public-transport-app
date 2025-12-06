@@ -84,7 +84,7 @@
 			onkeydown={handleKeyDown}
 		/>
 
-		<div class="flex w-full max-w-xs items-center gap-3">
+		<div class="flex w-full items-center gap-3">
 			<Label for="limitSelector" class="text-base">Limit:</Label>
 			<Input type="number" id="limitSelector" bind:value={limit} class="max-w-20"></Input>
 		</div>
