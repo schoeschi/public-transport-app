@@ -7,6 +7,7 @@
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { Separator } from '$lib/components/ui/separator/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
+	import Button from '$lib/components/ui/button/button.svelte';
 
 	let origin = $state('');
 	let destination = $state('');
@@ -33,19 +34,36 @@
 		var date = new Date(unixTimestamp * 1000);
 		return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 	}
+
+	const convertTime = (t) => {
+		const match = t.match(/^(\d+)d(\d+):(\d+):(\d+)$/);
+		if (!match) return 'Invalid Format';
+
+		const [, d, h, m] = match.map(Number);
+		const totalMinutes = d * 1440 + h * 60 + m;
+
+		const resultHours = Math.floor(totalMinutes / 60);
+		const resultMinutes = totalMinutes % 60;
+
+		return `${resultHours > 0 ? `${resultHours}h ` : ''}${resultMinutes}min`;
+	};
 </script>
 
-<div class="flex h-screen flex-1 flex-col justify-end gap-3 pb-14">
+<Item.Root class="flex h-screen flex-1 flex-col justify-end pb-18">
 	{#each connections as connection}
-		{@const changeCount = (connection[0]?.products.length ?? 1) - 1}
+		{@const transfers = connection.transfers}
 		{@const initialTrain = connection?.products[0] ?? 'Walk'}
 		{@const initialTrainDirection = connection.sections[0].journey.to}
 		{@const initalPlatform = connection?.from?.platform}
 
 		{@const departureTime = unixAsTime(connection?.from?.departureTimestamp)}
 		{@const arrivalTime = unixAsTime(connection?.to?.arrivalTimestamp)}
+		{@const duration = convertTime(connection?.duration)}
 
-		<Card.Root>
+		{@const arrivalDelay = connection.to?.delay}
+		{@const hasDelay = arrivalDelay >= 3}
+
+		<Card.Root class="w-full">
 			<Card.Header>
 				<Card.Text class="text-lg">
 					<div class="flex items-center gap-2">
@@ -60,33 +78,54 @@
 			</Card.Header>
 
 			<Card.Content class="flex items-center gap-5">
-				<span class="text-3xl">
+				<span class="text-3xl font-medium">
 					{departureTime}
 				</span>
 
-				<Card.Text>
+				<Card.Text class="text-lg">
 					<Separator class="flex-1" />
-					{#if changeCount == 1}
-						Change {changeCount} time
-					{:else if changeCount == 0}
+					{#if transfers == 1}
+						{transfers} change
+					{:else if transfers == 0}
 						direct
 					{:else}
-						Change {changeCount} times
+						{transfers} changes
 					{/if}
 					<Separator class="flex-1" />
 				</Card.Text>
 
-				<span class="text-3xl">
-					{arrivalTime}
+				<span class="text-3xl font-medium">
+					{#if !hasDelay}
+						<span class="text-green-500">
+							{arrivalTime}
+						</span>
+					{:else}
+						<span class="text-red-500">
+							{arrivalTime}
+						</span>
+					{/if}
 				</span>
 			</Card.Content>
 
 			<Card.Footer>
 				<Card.Text class="text-lg">
-					<div>Peak times</div>
-					<div>39min</div>
+					<div></div>
+					<div>
+						{#if !arrivalDelay}
+							<span>
+								{duration}
+							</span>
+						{:else}
+							{duration}
+							<span class="text-red-500">+{arrivalDelay}min</span>
+						{/if}
+					</div>
 				</Card.Text>
 			</Card.Footer>
 		</Card.Root>
 	{/each}
-</div>
+
+	<Item.Footer class="sticky mt-5">
+		<Button size="sm" href="/quick/">back</Button>
+	</Item.Footer>
+</Item.Root>
