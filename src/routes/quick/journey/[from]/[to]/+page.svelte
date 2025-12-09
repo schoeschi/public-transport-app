@@ -1,8 +1,6 @@
 <script>
 	import { page } from '$app/state';
 
-	import data from './testdata.js';
-
 	import * as Item from '$lib/components/ui/item/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { Separator } from '$lib/components/ui/separator/index.js';
@@ -16,23 +14,24 @@
 
 	let connections = $state();
 
-	/*$effect(
-		async
-		() => {
-			origin = page.params.from ?? '';
-			destination = page.params.to ?? '';
+	$effect(async () => {
+		origin = page.params.from ?? '';
+		destination = page.params.to ?? '';
 
-			let urlWithParams = `${requestURL}?from=${origin}&to=${destination}&limit=2`;
-			let response = await fetch(urlWithParams);
-			let data = await response.json();
-		}
-	);*/
+		let urlWithParams = `${requestURL}?from=${origin}&to=${destination}&limit=2`;
+		let response = await fetch(urlWithParams);
+		let data = await response.json();
 
-	connections = data?.connections ?? [];
+		connections = data?.connections ?? [];
+	});
 
 	function unixAsTime(unixTimestamp) {
 		var date = new Date(unixTimestamp * 1000);
 		return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+	}
+
+	function isNumeric(value) {
+		return /^-?\d+$/.test(value);
 	}
 
 	const convertTime = (t) => {
@@ -53,8 +52,8 @@
 	{#each connections as connection}
 		{@const transfers = connection.transfers}
 		{@const initialTrain = connection?.products[0] ?? 'Walk'}
-		{@const initialTrainDirection = connection.sections[0].journey.to}
-		{@const initalPlatform = connection?.from?.platform}
+		{@const initialTrainDirection = connection?.sections[0].journey.to}
+		{@const initialPlatform = connection?.from?.platform}
 
 		{@const departureTime = unixAsTime(connection?.from?.departureTimestamp)}
 		{@const arrivalTime = unixAsTime(connection?.to?.arrivalTimestamp)}
@@ -62,6 +61,7 @@
 
 		{@const arrivalDelay = connection.to?.delay}
 		{@const hasDelay = arrivalDelay >= 3}
+		{@const hasPlatform = isNumeric(initialPlatform)}
 
 		<Card.Root class="w-full">
 			<Card.Header>
@@ -73,7 +73,9 @@
 						</span>
 					</div>
 
-					<span class="font-bold">Pl. {initalPlatform}</span>
+					{#if hasPlatform}
+						<span class="font-bold">Pl. {initialPlatform}</span>
+					{/if}
 				</Card.Text>
 			</Card.Header>
 
