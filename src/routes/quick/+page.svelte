@@ -18,7 +18,7 @@
 		</Item.Header>
 
 		<Item.Content>
-			<Input id="origin" bind:value={origin}></Input>
+			<Input id="origin" bind:value={origin} required></Input>
 		</Item.Content>
 	</Item.Root>
 
@@ -28,13 +28,15 @@
 		</Item.Header>
 
 		<Item.Content>
-			<Input id="origin" placeholder="Enter destination" value={destination}></Input>
+			<Input id="origin" placeholder="Enter destination" bind:value={destination}></Input>
 		</Item.Content>
 	</Item.Root>
 
 	<Item.Root>
 		<Item.Header>
-			<Button class="flex-1" href="/quick/journey"><ArrowRight />Start journey</Button>
+			<Button class="flex-1" href="/quick/journey/{origin}/{destination}"
+				><ArrowRight />Start journey</Button
+			>
 			<Button variant="secondary" size="sm">via</Button>
 		</Item.Header>
 	</Item.Root>
