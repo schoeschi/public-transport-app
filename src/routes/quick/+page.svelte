@@ -7,8 +7,8 @@
 	import { ArrowRight } from '@lucide/svelte';
 
 	let originByLocation = $state(true);
-	let origin = $state('Geneva Main Station');
-	let destination = $state('');
+	let origin = $state('Aarau, Berufsschule');
+	let destination = $state('Aarau, Bahnhof');
 </script>
 
 <div class="flex h-screen flex-1 flex-col justify-end pb-14">
@@ -18,7 +18,7 @@
 		</Item.Header>
 
 		<Item.Content>
-			<Input id="origin" bind:value={origin} required></Input>
+			<Input id="origin" placeholder="Enter origin" bind:value={origin}></Input>
 		</Item.Content>
 	</Item.Root>
 
