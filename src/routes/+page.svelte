@@ -1,6 +1,5 @@
 <script>
 	import ThemeToggler from './ThemeToggler.svelte';
-	import DeparturesArrivalsToggle from './DeparturesArrivalsToggle.svelte';
 	import Map from './directions-Map.svelte';
 
 	import { Input } from '$lib/components/ui/input/index.js';
@@ -9,6 +8,10 @@
 	import * as Alert from '$lib/components/ui/alert/index.js';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	import { Label } from '$lib/components/ui/label/index.js';
+	import { ScrollArea } from '$lib/components/ui/scroll-area/index.js';
+	import * as ButtonGroup from '$lib/components/ui/button-group/index.js';
+
+	import { TrainFront, TrainFrontTunnel } from '@lucide/svelte';
 
 	let result = $state();
 	let departureLocation = $state('Aarau, Berufsschule');
@@ -19,6 +22,8 @@
 
 	let loaded = $state(false);
 
+	let currentTimeAsString = $state('just now');
+
 	async function fetchResults() {
 		loaded = false;
 		let response = await fetch(
@@ -27,6 +32,10 @@
 
 		let json = await response.json();
 		result = json.stationboard;
+
+		let now = new Date();
+
+		currentTimeAsString = formatTimestamp(now / 1000);
 
 		loaded = true;
 	}
@@ -61,7 +70,12 @@
 	>
 		<h1 class="text-xl font-semibold sm:text-2xl">Departure Board</h1>
 
-		<DeparturesArrivalsToggle />
+		<ButtonGroup.Root class="w-full max-w-xs">
+			<Button class="flex-1"><TrainFront /> Departures</Button>
+			<Button variant="secondary" class="flex-1 cursor-not-allowed"
+				><TrainFrontTunnel /> Arrivals</Button
+			>
+		</ButtonGroup.Root>
 
 		<Input
 			placeholder="Location"
@@ -78,24 +92,27 @@
 		<Button class="w-full max-w-xs" onclick={() => fetchResults()}>Show Departures</Button>
 	</section>
 
-	<section
-		class="flex w-full max-w-lg flex-col items-center justify-center gap-4 p-0 sm:gap-6 sm:p-4"
-	>
+	<section class="flex flex-col items-center justify-center gap-4 p-0 sm:gap-6 sm:p-4">
 		{#if loaded}
+			<span>Last updated: {currentTimeAsString}</span>
+
 			{#each result as departure}
-				<Alert.Root class="w-full text-sm sm:text-base">
+				<Alert.Root class="w-sm max-w-full text-sm sm:text-base">
 					<Alert.Title
-						class="flex flex-col gap-1 text-base sm:flex-row sm:items-center sm:justify-between sm:text-lg"
-						><span>
-							<Badge variant="outline" class="text-xs sm:text-sm"
-								>{departure.category}{departure.number}</Badge
-							> to {departure.to}</span
+						class="flex flex-col flex-row items-center justify-between gap-1 text-base sm:text-lg"
+						><span clas="flex items-center">
+							<Badge class="text-xs sm:text-sm"
+								>{departure.category == 'B' ? 'Bus ' : departure.category}{departure.number}</Badge
+							> &nbsp;to
+							{departure.to}</span
 						>
 						<span class="text-xs text-muted-foreground sm:text-sm">{departure.operator}</span
 						></Alert.Title
 					>
 					<Alert.Description class="flex items-center justify-between pt-2 text-xs sm:text-sm">
-						<span>Platform: {departure.stop.platform || 'N/A'}</span>
+						{#if departure.stop.platform}
+							<span>Pl. {departure.stop.platform}</span>
+						{/if}
 						<span class="flex items-center gap-2">
 							Departure: {formatTimestamp(departure.stop.departureTimestamp)}
 							{#if parseInt(departure.stop.delay) > 0}
@@ -108,11 +125,14 @@
 		{:else}
 			{#each Array.from({ length: limit }) as _, i}
 				<Alert.Root class="w-full text-sm sm:text-base">
-					<Alert.Title class="flex gap-3"><Skeleton class="h-4 w-3/4 rounded-md" /></Alert.Title>
+					<Alert.Title class="flex gap-3"
+						><Skeleton class="h-3 w-9 rounded-md" />
+						<Skeleton class="h-3 w-36 rounded-md" /></Alert.Title
+					>
 					<Alert.Description class="flex justify-between pt-2">
-						<span><Skeleton class="h-3 w-1/4 rounded-md" /></span>
+						<span><Skeleton class="h-3 w-12 rounded-md" /></span>
 						<span>
-							<Skeleton class="h-3 w-1/3 rounded-md" />
+							<Skeleton class="h-3 w-24 rounded-md" />
 						</span>
 					</Alert.Description>
 				</Alert.Root>
