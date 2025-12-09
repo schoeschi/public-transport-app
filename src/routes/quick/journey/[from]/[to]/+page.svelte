@@ -1,12 +1,12 @@
-<script>
+<script lang="ts">
 	import { page } from '$app/state';
 
 	let origin = $state('');
 	let destination = $state('');
 
 	$effect(() => {
-		origin ?? page.params.from;
-		destination ?? page.params.to;
+		origin = page.params.from!;
+		destination = page.params.to!;
 	});
 </script>
 
