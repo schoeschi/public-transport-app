@@ -55,7 +55,7 @@ let data = {
 				arrivalTimestamp: 1765301340,
 				departure: null,
 				departureTimestamp: null,
-				delay: null,
+				delay: 0,
 				platform: '3',
 				prognosis: {
 					platform: null,
