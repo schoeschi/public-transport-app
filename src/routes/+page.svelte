@@ -34,7 +34,7 @@
 
 	<Item.Root>
 		<Item.Header>
-			<Button class="flex-1" href="/quick/journey/{origin}/{destination}"
+			<Button class="flex-1" href="/journey/{origin}/{destination}"
 				><ArrowRight />Start journey</Button
 			>
 			<Button variant="secondary" size="sm">via</Button>

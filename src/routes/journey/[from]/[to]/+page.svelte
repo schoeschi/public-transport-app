@@ -10,7 +10,7 @@
 	let origin = $state('');
 	let destination = $state('');
 
-	let requestURL = 'http://transport.opendata.ch/v1/connections';
+	let requestURL = 'https://transport.opendata.ch/v1/connections';
 
 	let connections = $state();
 
@@ -128,6 +128,6 @@
 	{/each}
 
 	<Item.Footer class="sticky mt-5">
-		<Button size="sm" href="/quick/">back</Button>
+		<Button size="sm" href="/">back</Button>
 	</Item.Footer>
 </Item.Root>
