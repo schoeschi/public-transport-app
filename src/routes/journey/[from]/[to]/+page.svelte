@@ -128,6 +128,6 @@
 	{/each}
 
 	<Item.Footer class="sticky mt-5">
-		<Button size="sm" href="/quick/">back</Button>
+		<Button size="sm" href="/">back</Button>
 	</Item.Footer>
 </Item.Root>
