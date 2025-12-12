@@ -10,7 +10,7 @@
 	let origin = $state('');
 	let destination = $state('');
 
-	let requestURL = 'http://transport.opendata.ch/v1/connections';
+	let requestURL = 'https://transport.opendata.ch/v1/connections';
 
 	let connections = $state();
 
