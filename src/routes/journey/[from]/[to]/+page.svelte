@@ -1,5 +1,7 @@
 <script>
 	import { page } from '$app/state';
+	import testdata from '$lib/assets/testdata.js';
+	import { apiResponse } from '../../../../stores/apiResponse.svelte.js';
 
 	import * as Item from '$lib/components/ui/item/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
@@ -9,20 +11,27 @@
 
 	let origin = $state('');
 	let destination = $state('');
+	let connections = $state([]);
 
 	let requestURL = 'https://transport.opendata.ch/v1/connections';
 
-	let connections = $state();
-
-	$effect(async () => {
-		origin = page.params.from ?? '';
-		destination = page.params.to ?? '';
-
+	async function fetchConnections() {
 		let urlWithParams = `${requestURL}?from=${origin}&to=${destination}&limit=2`;
 		let response = await fetch(urlWithParams);
 		let data = await response.json();
+		Object.assign(apiResponse, data);
+	}
 
-		connections = data?.connections ?? [];
+	$effect(() => {
+		origin = page.params.from ?? '';
+		destination = page.params.to ?? '';
+
+		//fetchConnections();
+
+		let data = testdata;
+		Object.assign(apiResponse, data);
+
+		connections = apiResponse.connections;
 	});
 
 	function unixAsTime(unixTimestamp) {
@@ -60,7 +69,7 @@
 		{@const duration = convertTime(connection?.duration)}
 
 		{@const arrivalDelay = connection.to?.delay}
-		{@const hasDelay = arrivalDelay >= 3}
+		{@const hasDelay = parseInt(arrivalDelay) >= 3}
 		{@const hasPlatform = isNumeric(initialPlatform)}
 
 		<Card.Root class="w-full">
