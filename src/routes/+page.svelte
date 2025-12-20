@@ -4,6 +4,8 @@
 	import * as Item from '$lib/components/ui/item/index.js';
 	import Button from '$lib/components/ui/button/button.svelte';
 
+	import { userDirections } from '../stores/userDirectionsInput.svelte';
+
 	import { ArrowRight } from '@lucide/svelte';
 
 	let originByLocation = $state(true);
@@ -18,7 +20,7 @@
 		</Item.Header>
 
 		<Item.Content>
-			<Input id="origin" placeholder="Enter origin" bind:value={origin}></Input>
+			<Input id="origin" placeholder="Enter origin" bind:value={userDirections.from}></Input>
 		</Item.Content>
 	</Item.Root>
 
@@ -28,7 +30,7 @@
 		</Item.Header>
 
 		<Item.Content>
-			<Input id="origin" placeholder="Enter destination" bind:value={destination}></Input>
+			<Input id="origin" placeholder="Enter destination" bind:value={userDirections.to}></Input>
 		</Item.Content>
 	</Item.Root>
 
