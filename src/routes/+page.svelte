@@ -62,7 +62,7 @@
 	<Item.Root>
 		<Item.Header>
 			<div class="block w-full [view-transition-name:journey-btn]">
-				<Button class="w-full" href="/journey/{userDirections.from}/{userDirections.to}">
+				<Button class="w-full" href="/connections/{userDirections.from}/{userDirections.to}">
 					<ArrowRight /> Start journey
 				</Button>
 			</div>
