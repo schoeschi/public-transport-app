@@ -61,9 +61,11 @@
 
 	<Item.Root>
 		<Item.Header>
-			<Button class="flex-1" href="/journey/{userDirections.from}/{userDirections.to}">
-				<ArrowRight />Start journey
-			</Button>
+			<div class="block w-full [view-transition-name:journey-btn]">
+				<Button class="w-full" href="/journey/{userDirections.from}/{userDirections.to}">
+					<ArrowRight /> Start journey
+				</Button>
+			</div>
 
 			<Button variant="secondary" size="sm">via</Button>
 		</Item.Header>

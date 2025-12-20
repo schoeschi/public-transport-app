@@ -145,6 +145,8 @@
 		{/each}
 	{/if}
 	<Item.Footer class="sticky mt-5">
-		<Button size="sm" href="/">back</Button>
+		<div class="inline-block [view-transition-name:journey-btn]">
+			<Button size="sm" href="/">back</Button>
+		</div>
 	</Item.Footer>
 </Item.Root>

@@ -2,7 +2,38 @@
 @import 'tailwindcss';
 
 @import 'tw-animate-css';
+::view-transition-group(journey-btn) {
+	animation-duration: 0.5s;
+	animation-timing-function: ease-in-out;
+}
 
+::view-transition-old(journey-btn),
+::view-transition-new(journey-btn) {
+	object-fit: none;
+	object-position: left center;
+
+	height: 100%;
+	width: 100%;
+}
+
+::view-transition-old(journey-btn) {
+	animation: fade-out 0.2s ease-out forwards;
+}
+
+::view-transition-new(journey-btn) {
+	animation: fade-in 0.3s 0.1s ease-in both;
+}
+
+@keyframes fade-out {
+	to {
+		opacity: 0;
+	}
+}
+@keyframes fade-in {
+	from {
+		opacity: 0;
+	}
+}
 
 @custom-variant dark (&:is(.dark *));
 
