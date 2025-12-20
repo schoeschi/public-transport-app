@@ -3,7 +3,7 @@
 
 @import 'tw-animate-css';
 ::view-transition-group(journey-btn) {
-	animation-duration: 0.5s;
+	animation-duration: 0.3s;
 	animation-timing-function: ease-in-out;
 }
 
