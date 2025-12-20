@@ -1,5 +1,4 @@
 <script>
-	import { page } from '$app/state';
 	import testdata from '$lib/assets/testdata.js';
 	import { apiResponse } from '../../../../stores/apiResponse.svelte.js';
 	import { userDirections } from '../../../../stores/userDirectionsInput.svelte.js';
@@ -9,19 +8,23 @@
 	import { Separator } from '$lib/components/ui/separator/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import ConnectionCardSkeleton from '$lib/components/ConnectionCardSkeleton.svelte';
 
-	let origin = userDirections.from;
-	let destination = userDirections.to;
+	let origin = $state('');
+	let destination = $state('');
+	let amountOfJourneys = $state(2);
 	let connections = $state([]);
 	let loading = $state(true);
 
 	let requestURL = 'https://transport.opendata.ch/v1/connections';
 
 	async function fetchConnections() {
-		let urlWithParams = `${requestURL}?from=${origin}&to=${destination}&limit=2`;
+		let urlWithParams = `${requestURL}?from=${origin}&to=${destination}&limit=${amountOfJourneys}`;
 		let response = await fetch(urlWithParams);
 		let data = await response.json();
 		Object.assign(apiResponse, data);
+
+		connections = apiResponse.connections;
 
 		loading = false;
 	}
@@ -29,12 +32,9 @@
 	$effect(() => {
 		loading = true;
 
+		origin = userDirections.from;
+		destination = userDirections.to;
 		fetchConnections();
-
-		//let data = testdata;
-		//Object.assign(apiResponse, data);
-
-		connections = apiResponse.connections;
 	});
 
 	function unixAsTime(unixTimestamp) {
@@ -138,7 +138,10 @@
 			</Card.Footer>
 		</Card.Root>
 	{/each}
-
+	<!--
+		{#each new Array(amountOfJourneys) as i}
+			<ConnectionCardSkeleton />
+		{/each}-->
 	<Item.Footer class="sticky mt-5">
 		<Button size="sm" href="/">back</Button>
 	</Item.Footer>
