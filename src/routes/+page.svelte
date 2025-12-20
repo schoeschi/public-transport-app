@@ -1,44 +1,59 @@
 <script>
 	import { Input } from '$lib/components/ui/input/index.js';
-	import Label from '$lib/components/ui/label/label.svelte';
 	import * as Item from '$lib/components/ui/item/index.js';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import Separator from '$lib/components/ui/separator/separator.svelte';
 
 	import { userDirections } from '../stores/userDirectionsInput.svelte';
 
 	import { ArrowRight, ArrowDownUp } from '@lucide/svelte';
 
 	let originByLocation = $state(true);
+
+	function switchOriginDestination() {
+		[userDirections.from, userDirections.to] = [userDirections.to, userDirections.from];
+	}
 </script>
 
 <div class="flex h-screen flex-1 flex-col justify-end pb-14">
-	<Item.Root>
-		<Item.Header>
-			<Label for="origin" class="text-xl">Origin</Label>
-		</Item.Header>
-
+	<Item.Root class="border-none pb-0">
 		<Item.Content>
-			<Input id="origin" placeholder="Enter origin" bind:value={userDirections.from}></Input>
+			<Input
+				id="origin"
+				class="rounded-b-none"
+				placeholder="Enter origin"
+				bind:value={userDirections.from}
+			/>
 		</Item.Content>
 	</Item.Root>
 
-	<Item.Root>
-		<Item.Header class="flex">
-			<Label for="origin" class="text-xl">Destination</Label>
-
-			<Button
-				variant="ghost"
-				class="aspect-square"
-				onclick={() => {
-					[userDirections.from, userDirections.to] = [userDirections.to, userDirections.from];
-				}}
-			>
-				<ArrowDownUp />
-			</Button>
-		</Item.Header>
-
+	<Item.Root class="z-20 -my-5 flex w-full gap-0 border-none py-0">
 		<Item.Content>
-			<Input id="origin" placeholder="Enter destination" bind:value={userDirections.to}></Input>
+			<Separator />
+		</Item.Content>
+
+		<Button
+			variant="secondary"
+			class="aspect-square bg-input/30"
+			onclick={switchOriginDestination}
+			size="icon-lg"
+		>
+			<ArrowDownUp size={6} />
+		</Button>
+
+		<Item.Content class="flex-[0.05]">
+			<Separator class="w-2" />
+		</Item.Content>
+	</Item.Root>
+
+	<Item.Root class="border-none pt-0">
+		<Item.Content>
+			<Input
+				id="origin"
+				class="rounded-t-none"
+				placeholder="Enter destination"
+				bind:value={userDirections.to}
+			/>
 		</Item.Content>
 	</Item.Root>
 
