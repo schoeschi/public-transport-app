@@ -9,8 +9,6 @@
 	import { ArrowRight } from '@lucide/svelte';
 
 	let originByLocation = $state(true);
-	let origin = $state('Aarau, Berufsschule');
-	let destination = $state('Aarau, Bahnhof');
 </script>
 
 <div class="flex h-screen flex-1 flex-col justify-end pb-14">
@@ -36,7 +34,7 @@
 
 	<Item.Root>
 		<Item.Header>
-			<Button class="flex-1" href="/journey/{origin}/{destination}"
+			<Button class="flex-1" href="/journey/{userDirections.from}/{userDirections.to}"
 				><ArrowRight />Start journey</Button
 			>
 			<Button variant="secondary" size="sm">via</Button>

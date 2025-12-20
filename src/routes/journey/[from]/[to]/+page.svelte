@@ -2,6 +2,7 @@
 	import { page } from '$app/state';
 	import testdata from '$lib/assets/testdata.js';
 	import { apiResponse } from '../../../../stores/apiResponse.svelte.js';
+	import { userDirections } from '../../../../stores/userDirectionsInput.svelte.js';
 
 	import * as Item from '$lib/components/ui/item/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
@@ -9,9 +10,10 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import Button from '$lib/components/ui/button/button.svelte';
 
-	let origin = $state('');
-	let destination = $state('');
+	let origin = userDirections.from;
+	let destination = userDirections.to;
 	let connections = $state([]);
+	let loading = $state(true);
 
 	let requestURL = 'https://transport.opendata.ch/v1/connections';
 
@@ -20,16 +22,17 @@
 		let response = await fetch(urlWithParams);
 		let data = await response.json();
 		Object.assign(apiResponse, data);
+
+		loading = false;
 	}
 
 	$effect(() => {
-		origin = page.params.from ?? '';
-		destination = page.params.to ?? '';
+		loading = true;
 
-		//fetchConnections();
+		fetchConnections();
 
-		let data = testdata;
-		Object.assign(apiResponse, data);
+		//let data = testdata;
+		//Object.assign(apiResponse, data);
 
 		connections = apiResponse.connections;
 	});
