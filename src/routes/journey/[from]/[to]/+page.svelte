@@ -60,88 +60,90 @@
 	};
 </script>
 
-<Item.Root class="flex h-screen flex-1 flex-col justify-end pb-18">
-	{#each connections as connection}
-		{@const transfers = connection.transfers}
-		{@const initialTrain = connection?.products[0] ?? 'Walk'}
-		{@const initialTrainDirection = connection?.sections[0].journey.to}
-		{@const initialPlatform = connection?.from?.platform}
+<Item.Root class="flex h-screen flex-1 flex-col justify-end pb-18"
+	>{#if !loading}
+		{#each connections as connection}
+			{@const transfers = connection.transfers}
+			{@const initialTrain = connection?.products[0] ?? 'Walk'}
+			{@const initialTrainDirection = connection?.sections[0]?.journey?.to ?? ''}
+			{@const initialPlatform = connection?.from?.platform}
 
-		{@const departureTime = unixAsTime(connection?.from?.departureTimestamp)}
-		{@const arrivalTime = unixAsTime(connection?.to?.arrivalTimestamp)}
-		{@const duration = convertTime(connection?.duration)}
+			{@const departureTime = unixAsTime(connection?.from?.departureTimestamp)}
+			{@const arrivalTime = unixAsTime(connection?.to?.arrivalTimestamp)}
+			{@const duration = convertTime(connection?.duration)}
 
-		{@const arrivalDelay = connection.to?.delay}
-		{@const hasDelay = parseInt(arrivalDelay) >= 3}
-		{@const hasPlatform = isNumeric(initialPlatform)}
+			{@const arrivalDelay = connection.to?.delay}
+			{@const hasDelay = parseInt(arrivalDelay) >= 3}
+			{@const hasPlatform = isNumeric(initialPlatform)}
 
-		<Card.Root class="w-full">
-			<Card.Header>
-				<Card.Text class="text-lg">
-					<div class="flex items-center gap-2">
-						<Badge variant="destructive">{initialTrain}</Badge>
-						<span>
-							Direction <span class="font-bold">{initialTrainDirection}</span>
-						</span>
-					</div>
-
-					{#if hasPlatform}
-						<span class="font-bold">Pl. {initialPlatform}</span>
-					{/if}
-				</Card.Text>
-			</Card.Header>
-
-			<Card.Content class="flex items-center gap-5">
-				<span class="text-3xl font-medium">
-					{departureTime}
-				</span>
-
-				<Card.Text class="text-lg">
-					<Separator class="flex-1" />
-					{#if transfers == 1}
-						{transfers} change
-					{:else if transfers == 0}
-						direct
-					{:else}
-						{transfers} changes
-					{/if}
-					<Separator class="flex-1" />
-				</Card.Text>
-
-				<span class="text-3xl font-medium">
-					{#if !hasDelay}
-						<span class="text-green-500">
-							{arrivalTime}
-						</span>
-					{:else}
-						<span class="text-red-500">
-							{arrivalTime}
-						</span>
-					{/if}
-				</span>
-			</Card.Content>
-
-			<Card.Footer>
-				<Card.Text class="text-lg">
-					<div></div>
-					<div>
-						{#if !arrivalDelay}
+			<Card.Root class="w-full">
+				<Card.Header>
+					<Card.Text class="text-lg">
+						<div class="flex items-center gap-2">
+							<Badge variant="destructive">{initialTrain}</Badge>
 							<span>
-								{duration}
+								Direction <span class="font-bold">{initialTrainDirection}</span>
+							</span>
+						</div>
+
+						{#if hasPlatform}
+							<span class="font-bold">Pl. {initialPlatform}</span>
+						{/if}
+					</Card.Text>
+				</Card.Header>
+
+				<Card.Content class="flex items-center gap-5">
+					<span class="text-3xl font-medium">
+						{departureTime}
+					</span>
+
+					<Card.Text class="text-lg">
+						<Separator class="flex-1" />
+						{#if transfers == 1}
+							{transfers} change
+						{:else if transfers == 0}
+							direct
+						{:else}
+							{transfers} changes
+						{/if}
+						<Separator class="flex-1" />
+					</Card.Text>
+
+					<span class="text-3xl font-medium">
+						{#if !hasDelay}
+							<span class="text-green-500">
+								{arrivalTime}
 							</span>
 						{:else}
-							{duration}
-							<span class="text-red-500">+{arrivalDelay}min</span>
+							<span class="text-red-500">
+								{arrivalTime}
+							</span>
 						{/if}
-					</div>
-				</Card.Text>
-			</Card.Footer>
-		</Card.Root>
-	{/each}
-	<!--
+					</span>
+				</Card.Content>
+
+				<Card.Footer>
+					<Card.Text class="text-lg">
+						<div></div>
+						<div>
+							{#if !arrivalDelay}
+								<span>
+									{duration}
+								</span>
+							{:else}
+								{duration}
+								<span class="text-red-500">+{arrivalDelay}min</span>
+							{/if}
+						</div>
+					</Card.Text>
+				</Card.Footer>
+			</Card.Root>
+		{/each}
+	{:else}
 		{#each new Array(amountOfJourneys) as i}
 			<ConnectionCardSkeleton />
-		{/each}-->
+		{/each}
+	{/if}
 	<Item.Footer class="sticky mt-5">
 		<Button size="sm" href="/">back</Button>
 	</Item.Footer>
