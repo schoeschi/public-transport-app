@@ -6,7 +6,7 @@
 
 	import { userDirections } from '../stores/userDirectionsInput.svelte';
 
-	import { ArrowRight } from '@lucide/svelte';
+	import { ArrowRight, ArrowDownUp } from '@lucide/svelte';
 
 	let originByLocation = $state(true);
 </script>
@@ -23,8 +23,18 @@
 	</Item.Root>
 
 	<Item.Root>
-		<Item.Header>
+		<Item.Header class="flex">
 			<Label for="origin" class="text-xl">Destination</Label>
+
+			<Button
+				variant="ghost"
+				class="aspect-square"
+				onclick={() => {
+					[userDirections.from, userDirections.to] = [userDirections.to, userDirections.from];
+				}}
+			>
+				<ArrowDownUp />
+			</Button>
 		</Item.Header>
 
 		<Item.Content>
@@ -34,9 +44,10 @@
 
 	<Item.Root>
 		<Item.Header>
-			<Button class="flex-1" href="/journey/{userDirections.from}/{userDirections.to}"
-				><ArrowRight />Start journey</Button
-			>
+			<Button class="flex-1" href="/journey/{userDirections.from}/{userDirections.to}">
+				<ArrowRight />Start journey
+			</Button>
+
 			<Button variant="secondary" size="sm">via</Button>
 		</Item.Header>
 	</Item.Root>
