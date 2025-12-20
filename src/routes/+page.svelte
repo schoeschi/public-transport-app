@@ -23,6 +23,7 @@
 				class="rounded-b-none"
 				placeholder="Enter origin"
 				bind:value={userDirections.from}
+				autocomplete="off"
 			/>
 		</Item.Content>
 	</Item.Root>
@@ -53,6 +54,7 @@
 				class="rounded-t-none"
 				placeholder="Enter destination"
 				bind:value={userDirections.to}
+				autocomplete="off"
 			/>
 		</Item.Content>
 	</Item.Root>
