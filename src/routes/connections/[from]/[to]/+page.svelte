@@ -2,6 +2,7 @@
 	import testdata from '$lib/assets/testdata.js';
 	import { apiResponse } from '../../../../stores/apiResponse.svelte.js';
 	import { userDirections } from '../../../../stores/userDirectionsInput.svelte.js';
+	import { goto } from '$app/navigation';
 
 	import * as Item from '$lib/components/ui/item/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
@@ -16,6 +17,9 @@
 	let connections = $state([]);
 	let loading = $state(true);
 
+	let tempDeparture = $state();
+	let tempArrival = $state();
+
 	let requestURL = 'https://transport.opendata.ch/v1/connections';
 
 	async function fetchConnections() {
@@ -26,6 +30,9 @@
 
 		connections = apiResponse.connections;
 
+		tempDeparture = userDirections.from;
+		tempArrival = userDirections.to;
+
 		loading = false;
 	}
 
@@ -34,7 +41,10 @@
 
 		origin = userDirections.from;
 		destination = userDirections.to;
-		fetchConnections();
+
+		if (origin != tempDeparture && destination != tempArrival) {
+			fetchConnections();
+		}
 	});
 
 	function unixAsTime(unixTimestamp) {
@@ -58,11 +68,15 @@
 
 		return `${resultHours > 0 ? `${resultHours}h ` : ''}${resultMinutes}min`;
 	};
+
+	const openJourney = (id) => {
+		goto(`/journey?id=${id}`);
+	};
 </script>
 
 <Item.Root class="flex h-screen flex-1 flex-col justify-end pb-18"
 	>{#if !loading}
-		{#each connections as connection}
+		{#each connections as connection, i}
 			{@const transfers = connection.transfers}
 			{@const initialTrain = connection?.products[0] ?? 'Walk'}
 			{@const initialTrainDirection = connection?.sections[0]?.journey?.to ?? ''}
@@ -76,7 +90,12 @@
 			{@const hasDelay = parseInt(arrivalDelay) >= 3}
 			{@const hasPlatform = isNumeric(initialPlatform)}
 
-			<Card.Root class="w-full">
+			<Card.Root
+				class="w-full"
+				onclick={() => {
+					openJourney(i);
+				}}
+			>
 				<Card.Header>
 					<Card.Text class="text-lg">
 						<div class="flex items-center gap-2">
