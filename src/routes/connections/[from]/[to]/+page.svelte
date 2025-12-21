@@ -23,7 +23,7 @@
 	let requestURL = 'https://transport.opendata.ch/v1/connections';
 
 	async function fetchConnections() {
-		let urlWithParams = `${requestURL}?from=${origin}&to=${destination}&limit=${amountOfJourneys}`;
+		let urlWithParams = `${requestURL}?from=${origin}&to=${destination}&limit=${amountOfJourneys}&time=${userDirections.departureHour}:${userDirections.departureMinute}`;
 		let response = await fetch(urlWithParams);
 		let data = await response.json();
 		Object.assign(apiResponse, data);
