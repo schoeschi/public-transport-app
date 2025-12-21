@@ -4,18 +4,31 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 
+	import { goto } from '$app/navigation';
+
 	import { userDirections } from '../stores/userDirectionsInput.svelte';
 
 	import { ArrowRight, ArrowDownUp } from '@lucide/svelte';
 
-	let originByLocation = $state(true);
-
 	function switchOriginDestination() {
 		[userDirections.from, userDirections.to] = [userDirections.to, userDirections.from];
 	}
+
+	function openConnections(e) {
+		e?.preventDefault();
+
+		if (userDirections.from.trim() == '' || userDirections.to.trim() == '') {
+			return;
+		}
+
+		const urlFrom = encodeURIComponent(userDirections.from);
+		const urlTo = encodeURIComponent(userDirections.to);
+
+		goto(`/connections/${urlFrom}/${urlTo}`);
+	}
 </script>
 
-<div class="flex h-screen flex-1 flex-col justify-end pb-14">
+<form class="flex h-screen flex-1 flex-col justify-end pb-14" onsubmit={openConnections}>
 	<Item.Root class="border-none pb-0">
 		<Item.Content>
 			<Input
@@ -38,6 +51,7 @@
 			class="aspect-square bg-input/30"
 			onclick={switchOriginDestination}
 			size="icon-lg"
+			aria-label="Swap origin and destination"
 		>
 			<ArrowDownUp size={6} />
 		</Button>
@@ -50,7 +64,7 @@
 	<Item.Root class="border-none pt-0">
 		<Item.Content>
 			<Input
-				id="origin"
+				id="destination"
 				class="rounded-t-none"
 				placeholder="Enter destination"
 				bind:value={userDirections.to}
@@ -62,7 +76,7 @@
 	<Item.Root>
 		<Item.Header>
 			<div class="block w-full [view-transition-name:journey-btn]">
-				<Button class="w-full" href="/connections/{userDirections.from}/{userDirections.to}">
+				<Button class="w-full" type="submit">
 					<ArrowRight /> Start journey
 				</Button>
 			</div>
@@ -70,4 +84,4 @@
 			<Button variant="secondary" size="sm">via</Button>
 		</Item.Header>
 	</Item.Root>
-</div>
+</form>
