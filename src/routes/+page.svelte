@@ -1,20 +1,33 @@
 <script>
-	import { Input } from '$lib/components/ui/input/index.js';
+	import Input from '$lib/components/ui/input/input.svelte';
 	import * as Item from '$lib/components/ui/item/index.js';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
+	import * as Drawer from '$lib/components/ui/drawer/index.js';
 
 	import { goto } from '$app/navigation';
 
 	import { userDirections } from '../stores/userDirectionsInput.svelte';
 
-	import { ArrowRight, ArrowDownUp, CircleDot } from '@lucide/svelte';
+	import {
+		ArrowRight,
+		ArrowDownUp,
+		CircleDot,
+		ClockPlus,
+		ChevronDown,
+		ChevronUp
+	} from '@lucide/svelte';
 
 	function switchOriginDestination() {
 		[userDirections.from, userDirections.to] = [userDirections.to, userDirections.from];
 	}
 
 	function openConnections(e) {
+		if (e.submitter && e.submitter.getAttribute('type') !== 'submit') {
+			e.preventDefault();
+			return;
+		}
+
 		e?.preventDefault();
 
 		if (userDirections.from.trim() == '' || userDirections.to.trim() == '') {
@@ -26,6 +39,12 @@
 
 		goto(`/connections/${urlFrom}/${urlTo}`);
 	}
+
+	$effect(() => {
+		let now = new Date();
+		userDirections.departureHour = now.getHours();
+		userDirections.departureMinute = now.getMinutes();
+	});
 </script>
 
 <form class="flex h-svh flex-1 flex-col justify-end pb-14" onsubmit={openConnections}>
@@ -44,7 +63,6 @@
 						placeholder="Enter origin"
 						bind:value={userDirections.from}
 						autocomplete="off"
-						required
 					/>
 				</Item.Content>
 			</Item.Root>
@@ -77,7 +95,6 @@
 						placeholder="Enter destination"
 						bind:value={userDirections.to}
 						autocomplete="off"
-						required
 					/>
 				</Item.Content>
 			</Item.Root>
@@ -92,7 +109,38 @@
 				</Button>
 			</div>
 
-			<Button variant="secondary" size="sm">via</Button>
+			<Drawer.Root>
+				<Drawer.Trigger>
+					<Button variant="secondary" size="md" type="button">
+						<ClockPlus /> Set time
+					</Button>
+				</Drawer.Trigger>
+
+				<Drawer.Content class="flex min-h-80 flex-1 items-center">
+					<Drawer.Header>
+						<Drawer.Title class="text-4xl font-semibold">Select your departure time</Drawer.Title>
+						<Drawer.Description class="text-xl">
+							Choose your desired time to leave
+						</Drawer.Description>
+
+						<Drawer.Description class="flex items-center gap-2 text-3xl">
+							<Item.Root class="flex flex-col gap-2 p-0">
+								<Input type="number" min="0" max="23" bind:value={userDirections.departureHour} />
+							</Item.Root>
+							:
+							<Item.Root class="flex flex-col gap-2 p-0">
+								<Input type="number" min="0" max="59" bind:value={userDirections.departureMinute} />
+							</Item.Root>
+						</Drawer.Description>
+					</Drawer.Header>
+
+					<Drawer.Footer>
+						<Drawer.Close>
+							<Button>Save</Button>
+						</Drawer.Close>
+					</Drawer.Footer>
+				</Drawer.Content>
+			</Drawer.Root>
 		</Item.Header>
 	</Item.Root>
 </form>
