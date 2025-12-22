@@ -1,7 +1,7 @@
 <script>
 	import testdata from '$lib/assets/testdata.js';
-	import { apiResponse } from '../../../../stores/apiResponse.svelte.js';
-	import { userDirections } from '../../../../stores/userDirectionsInput.svelte.js';
+	import { apiResponse } from '../../stores/apiResponse.svelte';
+	import { userDirections } from '../../stores/userDirectionsInput.svelte';
 	import { goto } from '$app/navigation';
 
 	import * as Item from '$lib/components/ui/item/index.js';
@@ -13,7 +13,7 @@
 
 	let origin = $state('');
 	let destination = $state('');
-	let amountOfJourneys = $state(2);
+	let amountOfJourneys = $state(4);
 	let connections = $state([]);
 	let loading = $state(true);
 
@@ -23,7 +23,7 @@
 	let requestURL = 'https://transport.opendata.ch/v1/connections';
 
 	async function fetchConnections() {
-		let urlWithParams = `${requestURL}?from=${origin}&to=${destination}&limit=${amountOfJourneys}&time=${userDirections.departureHour}:${userDirections.departureMinute}`;
+		let urlWithParams = `${requestURL}?from=${origin}&to=${destination}&limit=${amountOfJourneys}&time=${userDirections.departureTime}`;
 		let response = await fetch(urlWithParams);
 		let data = await response.json();
 		Object.assign(apiResponse, data);

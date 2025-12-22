@@ -28,22 +28,19 @@
 			return;
 		}
 
-		e?.preventDefault();
-
 		if (userDirections.from.trim() == '' || userDirections.to.trim() == '') {
 			return;
 		}
 
-		const urlFrom = encodeURIComponent(userDirections.from);
-		const urlTo = encodeURIComponent(userDirections.to);
+		e?.preventDefault();
 
-		goto(`/connections/${urlFrom}/${urlTo}`);
+		goto(`/connections`);
 	}
 
 	$effect(() => {
 		let now = new Date();
-		userDirections.departureHour = now.getHours();
-		userDirections.departureMinute = now.getMinutes();
+		userDirections.departureTime = `${now.getHours()}:${now.getMinutes()}`;
+		console.log(userDirections.departureTime);
 	});
 </script>
 
@@ -124,13 +121,7 @@
 						</Drawer.Description>
 
 						<Drawer.Description class="flex items-center gap-2 text-3xl">
-							<Item.Root class="flex flex-col gap-2 p-0">
-								<Input type="number" min="0" max="23" bind:value={userDirections.departureHour} />
-							</Item.Root>
-							:
-							<Item.Root class="flex flex-col gap-2 p-0">
-								<Input type="number" min="0" max="59" bind:value={userDirections.departureMinute} />
-							</Item.Root>
+							<Input type="time" bind:value={userDirections.departureTime} />
 						</Drawer.Description>
 					</Drawer.Header>
 
