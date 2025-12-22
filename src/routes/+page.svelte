@@ -39,8 +39,10 @@
 
 	$effect(() => {
 		let now = new Date();
-		userDirections.departureTime = `${now.getHours()}:${now.getMinutes()}`;
-		console.log(userDirections.departureTime);
+		userDirections.departureTime = now.toLocaleTimeString('en-GB', {
+			hour: '2-digit',
+			minute: '2-digit'
+		});
 	});
 </script>
 
