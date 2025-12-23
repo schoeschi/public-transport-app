@@ -1,1 +1,1 @@
-export const userDirections = $state({ from: '', to: '', departureTime: '' });
+export const userDirections = $state({ from: 'Zürich HB', to: '', departureTime: '' });

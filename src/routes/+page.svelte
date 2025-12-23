@@ -4,37 +4,45 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import * as Drawer from '$lib/components/ui/drawer/index.js';
+	import JelloBounce from '$lib/components/JelloBounce.svelte';
 
 	import { goto } from '$app/navigation';
 
 	import { userDirections } from '../stores/userDirectionsInput.svelte';
 
-	import {
-		ArrowRight,
-		ArrowDownUp,
-		CircleDot,
-		ClockPlus,
-		ChevronDown,
-		ChevronUp
-	} from '@lucide/svelte';
+	import { ArrowRight, ArrowDownUp, CircleDot, ClockPlus, Zap } from '@lucide/svelte';
+
+	let suggestions = [
+		{
+			to: 'Olten'
+		},
+		{
+			to: 'Zürich HB'
+		}
+	];
 
 	function switchOriginDestination() {
 		[userDirections.from, userDirections.to] = [userDirections.to, userDirections.from];
 	}
 
 	function openConnections(e) {
-		if (e.submitter && e.submitter.getAttribute('type') !== 'submit') {
+		if (e && e.submitter) {
+			if (e.submitter.getAttribute('type') !== 'submit') {
+				e.preventDefault();
+				return;
+			}
 			e.preventDefault();
-			return;
 		}
 
-		if (userDirections.from.trim() == '' || userDirections.to.trim() == '') {
+		if (!userDirections.from.trim() || !userDirections.to.trim()) {
 			return;
 		}
-
-		e?.preventDefault();
 
 		goto(`/connections`);
+	}
+
+	function openSuggestion(destination) {
+		userDirections.to = destination;
 	}
 
 	$effect(() => {
@@ -115,9 +123,9 @@
 					</Button>
 				</Drawer.Trigger>
 
-				<Drawer.Content class="flex min-h-80 flex-1 items-center">
+				<Drawer.Content>
 					<Drawer.Header>
-						<Drawer.Title class="text-4xl font-semibold">Select your departure time</Drawer.Title>
+						<Drawer.Title>Select your departure time</Drawer.Title>
 						<Drawer.Description class="text-xl">
 							Choose your desired time to leave
 						</Drawer.Description>
@@ -135,5 +143,37 @@
 				</Drawer.Content>
 			</Drawer.Root>
 		</Item.Header>
+	</Item.Root>
+
+	<Item.Root class="absolute right-4 bottom-4 p-0">
+		<Drawer.Root>
+			<Drawer.Trigger>
+				<JelloBounce>
+					<Button size="icon-lg"><Zap /></Button>
+				</JelloBounce>
+			</Drawer.Trigger>
+
+			<Drawer.Content>
+				<Drawer.Header>
+					<Drawer.Title>Quick access</Drawer.Title>
+				</Drawer.Header>
+
+				<Drawer.Description class="flex min-w-[60vw] flex-col gap-2">
+					{#each suggestions as suggestion}
+						<Button
+							variant="secondary"
+							class="w-full"
+							type="submit"
+							onclick={() => {
+								userDirections.to = suggestion.to;
+								openConnections();
+							}}
+						>
+							{suggestion.to}
+						</Button>
+					{/each}
+				</Drawer.Description>
+			</Drawer.Content>
+		</Drawer.Root>
 	</Item.Root>
 </form>

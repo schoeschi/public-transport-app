@@ -74,8 +74,10 @@
 	};
 </script>
 
-<Item.Root class="flex min-h-screen flex-1 flex-col flex-nowrap justify-end overflow-y-scroll pb-18"
-	>{#if !loading}
+<Item.Root
+	class="flex min-h-screen w-screen flex-1 flex-col flex-nowrap justify-end overflow-x-hidden"
+>
+	{#if !loading}
 		{#each connections as connection, i}
 			{@const transfers = connection.transfers}
 			{@const initialTrain = connection?.products[0] ?? 'Walk'}
@@ -112,7 +114,7 @@
 				</Card.Header>
 
 				<Card.Content class="flex items-center gap-5">
-					<span class="text-3xl font-medium">
+					<span class="text-2xl font-medium">
 						{departureTime}
 					</span>
 
@@ -128,7 +130,7 @@
 						<Separator class="flex-1" />
 					</Card.Text>
 
-					<span class="text-3xl font-medium">
+					<span class="text-2xl font-medium">
 						{#if !hasDelay}
 							<span class="text-green-500">
 								{arrivalTime}
@@ -165,7 +167,7 @@
 	{/if}
 </Item.Root>
 
-<Item.Root class="sticky bottom-18 mt-5 flex w-screen justify-center p-0">
+<Item.Root class="sticky bottom-0 mt-5 flex w-screen justify-center p-0 pb-18">
 	<div class="inline-block [view-transition-name:journey-btn]">
 		<Button size="sm" href="/">back</Button>
 	</div>
