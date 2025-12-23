@@ -74,7 +74,7 @@
 	};
 </script>
 
-<Item.Root class="flex h-screen flex-1 flex-col justify-end pb-18"
+<Item.Root class="flex min-h-screen flex-1 flex-col flex-nowrap justify-end overflow-y-scroll pb-18"
 	>{#if !loading}
 		{#each connections as connection, i}
 			{@const transfers = connection.transfers}
@@ -163,9 +163,10 @@
 			<ConnectionCardSkeleton />
 		{/each}
 	{/if}
-	<Item.Footer class="sticky mt-5">
-		<div class="inline-block [view-transition-name:journey-btn]">
-			<Button size="sm" href="/">back</Button>
-		</div>
-	</Item.Footer>
+</Item.Root>
+
+<Item.Root class="sticky bottom-18 mt-5 flex w-screen justify-center p-0">
+	<div class="inline-block [view-transition-name:journey-btn]">
+		<Button size="sm" href="/">back</Button>
+	</div>
 </Item.Root>
