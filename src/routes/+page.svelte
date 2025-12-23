@@ -20,6 +20,7 @@
 			to: 'Zürich HB'
 		}
 	];
+	const isFromEdited = $derived(userDirections.from !== userDirections.location);
 
 	function switchOriginDestination() {
 		[userDirections.from, userDirections.to] = [userDirections.to, userDirections.from];
@@ -41,10 +42,6 @@
 		goto(`/connections`);
 	}
 
-	function openSuggestion(destination) {
-		userDirections.to = destination;
-	}
-
 	$effect(() => {
 		let now = new Date();
 		userDirections.departureTime = now.toLocaleTimeString('en-GB', {
@@ -55,57 +52,48 @@
 </script>
 
 <form class="flex h-svh flex-1 flex-col justify-end pb-14" onsubmit={openConnections}>
-	<Item.Root class="grid grid-cols-[auto_1fr] gap-0 pr-0">
-		<div class="flex h-full flex-col items-center justify-center">
-			<CircleDot />
-			<Separator orientation="vertical" class="flex-[0.3] bg-white" />
-			<CircleDot />
-		</div>
-		<div class="flex flex-col">
-			<Item.Root class="border-none pb-0">
-				<Item.Content>
-					<Input
-						id="origin"
-						class="rounded-b-none"
-						placeholder="Enter origin"
-						bind:value={userDirections.from}
-						autocomplete="off"
-					/>
-				</Item.Content>
-			</Item.Root>
+	<Item.Root class="border-none pb-0">
+		<Item.Content>
+			<Input
+				id="origin"
+				placeholder="Enter origin"
+				bind:value={userDirections.from}
+				autocomplete="off"
+				class={(isFromEdited ? 'text-white' : 'text-blue-400') + ' rounded-b-none'}
+			/>
+		</Item.Content>
+	</Item.Root>
 
-			<Item.Root class="z-20 -my-5 flex w-full gap-0 border-none py-0">
-				<Item.Content>
-					<Separator />
-				</Item.Content>
+	<Item.Root class="z-20 -my-5 flex w-full gap-0 border-none py-0">
+		<Item.Content>
+			<Separator />
+		</Item.Content>
 
-				<Button
-					variant="secondary"
-					class="aspect-square bg-input/30"
-					onclick={switchOriginDestination}
-					size="icon-lg"
-					aria-label="Swap origin and destination"
-				>
-					<ArrowDownUp size={6} />
-				</Button>
+		<Button
+			variant="secondary"
+			class="aspect-square bg-input/30"
+			onclick={switchOriginDestination}
+			size="icon-lg"
+			aria-label="Swap origin and destination"
+		>
+			<ArrowDownUp size={6} />
+		</Button>
 
-				<Item.Content class="flex-[0.05]">
-					<Separator class="w-2" />
-				</Item.Content>
-			</Item.Root>
+		<Item.Content class="flex-[0.05]">
+			<Separator class="w-2" />
+		</Item.Content>
+	</Item.Root>
 
-			<Item.Root class="border-none pt-0">
-				<Item.Content>
-					<Input
-						id="destination"
-						class="rounded-t-none"
-						placeholder="Enter destination"
-						bind:value={userDirections.to}
-						autocomplete="off"
-					/>
-				</Item.Content>
-			</Item.Root>
-		</div>
+	<Item.Root class="border-none pt-0">
+		<Item.Content>
+			<Input
+				id="destination"
+				class="rounded-t-none"
+				placeholder="Enter destination"
+				bind:value={userDirections.to}
+				autocomplete="off"
+			/>
+		</Item.Content>
 	</Item.Root>
 
 	<Item.Root>

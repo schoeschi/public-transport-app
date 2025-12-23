@@ -43,6 +43,7 @@
 	"dependencies": {
 		"@capacitor/android": "^8.0.0",
 		"@capacitor/core": "^8.0.0",
+		"@capacitor/geolocation": "^8.0.0",
 		"@mapbox/polyline": "^1.2.1",
 		"@maptiler/sdk": "^3.9.0",
 		"@sveltejs/adapter-node": "^5.4.0",
