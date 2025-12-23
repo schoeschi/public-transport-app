@@ -1,16 +1,18 @@
 // svelte.config.js
-import adapter from '@sveltejs/adapter-node';
+import adapter from '@sveltejs/adapter-static';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 const config = {
-    preprocess: vitePreprocess(),
-    kit: {
-        adapter: adapter(),
-        
-        prerender: {
-            entries: [], 
-        }
-    }
+	preprocess: vitePreprocess(),
+	kit: {
+		adapter: adapter({
+			pages: 'dist',
+			assets: 'dist',
+			fallback: 'index.html'
+		}),
+		prerender: {
+			entries: []
+		}
+	}
 };
-
 export default config;
