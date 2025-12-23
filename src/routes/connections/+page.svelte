@@ -99,16 +99,16 @@
 				}}
 			>
 				<Card.Header>
-					<Card.Text class="text-lg">
+					<Card.Text class="flex text-lg">
 						<div class="flex items-center gap-2">
 							<Badge variant="destructive">{initialTrain}</Badge>
 							<span>
-								Direction <span class="font-bold">{initialTrainDirection}</span>
+								to <span class="font-bold">{initialTrainDirection}</span>
 							</span>
 						</div>
 
 						{#if hasPlatform}
-							<span class="font-bold">Pl. {initialPlatform}</span>
+							<span class="shrink-0 font-bold break-keep">Pl. {initialPlatform}</span>
 						{/if}
 					</Card.Text>
 				</Card.Header>
