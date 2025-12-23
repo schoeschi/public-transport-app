@@ -33,7 +33,7 @@
 {#each steps as step}
 	<Item.Root>
 		<Item.Header>
-			{dateFormat(step.timestamp, 'HH:MM')}
+			{dateFormat(step.timestamp, 'HH:MM')}, Pl. {step.platform}
 		</Item.Header>
 		<Item.Content>
 			{step.verb}
