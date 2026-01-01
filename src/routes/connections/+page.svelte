@@ -80,7 +80,7 @@
 	{#if !loading}
 		{#each connections as connection, i}
 			{@const transfers = connection.transfers}
-			{@const initialTrain = connection?.products[0] ?? 'Walk'}
+			{@const initialTrain = connection?.products[0]}
 			{@const initialTrainDirection = connection?.sections[0]?.journey?.to ?? ''}
 			{@const initialPlatform = connection?.from?.platform}
 
@@ -101,10 +101,14 @@
 				<Card.Header>
 					<Card.Text class="flex text-lg">
 						<div class="flex items-center gap-2">
-							<Badge variant="destructive">{initialTrain}</Badge>
-							<span>
-								to <span class="font-bold">{initialTrainDirection}</span>
-							</span>
+							{#if initialTrain}
+								<Badge variant="destructive">{initialTrain}</Badge>
+								<span>
+									to <span class="font-bold">{initialTrainDirection}</span>
+								</span>
+							{:else}
+								<Badge>Walk</Badge>
+							{/if}
 						</div>
 
 						{#if hasPlatform}
