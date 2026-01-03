@@ -38,6 +38,8 @@
 		destination = userDirections.to;
 
 		fetchConnections();
+
+		window.scrollTo(0, document.body.scrollHeight);
 	});
 
 	function unixAsTime(unixTimestamp) {
