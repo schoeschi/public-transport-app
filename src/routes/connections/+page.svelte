@@ -23,30 +23,21 @@
 	let requestURL = 'https://transport.opendata.ch/v1/connections';
 
 	async function fetchConnections() {
-		//let urlWithParams = `${requestURL}?from=${origin}&to=${destination}&limit=${amountOfJourneys}&time=${userDirections.departureTime}`;
-		//let response = await fetch(urlWithParams);
-		//let data = await response.json();
-		Object.assign(apiResponse, testdata);
+		let urlWithParams = `${requestURL}?from=${origin}&to=${destination}&limit=${amountOfJourneys}&time=${userDirections.departureTime}`;
+		let response = await fetch(urlWithParams);
+		let data = await response.json();
+		Object.assign(apiResponse, data);
 
 		connections = apiResponse.connections;
-
-		tempDeparture = userDirections.from;
-		tempArrival = userDirections.to;
 
 		loading = false;
 	}
 
 	$effect(() => {
-		loading = true;
-
 		origin = userDirections.from;
 		destination = userDirections.to;
 
-		loading = false;
-
-		if (origin != tempDeparture && destination != tempArrival) {
-			fetchConnections();
-		}
+		fetchConnections();
 	});
 
 	function unixAsTime(unixTimestamp) {
