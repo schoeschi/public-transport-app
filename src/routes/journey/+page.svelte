@@ -1,7 +1,6 @@
 <script>
 	import { page } from '$app/stores';
 	import { apiResponse } from '../../stores/apiResponse.svelte';
-	import dateFormat from 'dateformat';
 	import Time from 'svelte-time';
 
 	import * as Item from '$lib/components/ui/item';
@@ -58,7 +57,7 @@
 				<!--<Badge variant="destructive">{step.train}</Badge>-->
 				<div class="flex items-center gap-3">
 					<div>
-						{dateFormat(step.timestamp, 'HH:MM')}
+						<Time timestamp={step.timestamp} format="HH:mm" />
 					</div>
 
 					<div class="flex flex-col text-3xl">
