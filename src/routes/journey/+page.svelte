@@ -41,44 +41,42 @@
 	//
 {/snippet}
 
-<div>
-	{#each steps as step}
-		<Item.Root class="h-svh">
-			<Item.Header class="flex flex-col gap-1">
-				<div class="text-lg font-semibold text-neutral-500 uppercase">
-					{step.verb}
+{#each steps as step}
+	<Item.Root class="h-svh">
+		<Item.Header class="flex flex-col gap-1">
+			<div class="text-lg font-semibold text-neutral-500 uppercase">
+				{step.verb}
+			</div>
+
+			<div class="text-3xl">
+				{step.preposition}
+				{step.stationName}
+			</div>
+		</Item.Header>
+
+		<Item.Content class="flex flex-col items-center gap-8 text-6xl font-semibold">
+			<!--<Badge variant="destructive">{step.train}</Badge>-->
+			<div class="flex items-center gap-3">
+				<div>
+					<Time timestamp={step.timestamp} format="HH:mm" />
 				</div>
 
-				<div class="text-3xl">
-					{step.preposition}
-					{step.stationName}
-				</div>
-			</Item.Header>
-
-			<Item.Content class="flex flex-col items-center gap-8 text-6xl font-semibold">
-				<!--<Badge variant="destructive">{step.train}</Badge>-->
-				<div class="flex items-center gap-3">
+				<div class="flex flex-col text-3xl">
 					<div>
-						<Time timestamp={step.timestamp} format="HH:mm" />
+						<Time timestamp={step.timestamp} live relative />
 					</div>
 
-					<div class="flex flex-col text-3xl">
-						<div>
-							<Time timestamp={step.timestamp} live relative />
-						</div>
-
-						<div>
-							{'on time'}
-						</div>
+					<div>
+						{'on time'}
 					</div>
 				</div>
+			</div>
 
-				{#if step.platform}
-					<div>
-						Pl. {step.platform}
-					</div>
-				{/if}
-			</Item.Content>
-		</Item.Root>
-	{/each}
-</div>
+			{#if step.platform}
+				<div>
+					Pl. {step.platform}
+				</div>
+			{/if}
+		</Item.Content>
+	</Item.Root>
+{/each}
