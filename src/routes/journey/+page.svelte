@@ -6,6 +6,7 @@
 	import * as Item from '$lib/components/ui/item';
 	import Badge from '$lib/components/ui/badge/badge.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import { RefreshCw } from '@lucide/svelte';
 
 	const urlParams = $page.url.searchParams;
 	const id = urlParams.get('id') ?? '';
@@ -19,7 +20,8 @@
 	const singleStep = (data, verb = null, preposition, train = null) => ({
 		verb,
 		preposition,
-		platform: data?.platform,
+		platformHasChanged: data?.platform.includes('!') ?? false,
+		platform: data?.platform.replace('!', ''),
 		stationName: data.station.name,
 		timestamp: data.departure ?? data.arrival,
 		train
@@ -74,15 +76,21 @@
 			</div>
 
 			{#if step.platform}
-				<div>
-					Pl. {step.platform}
+				<div class="flex items-center gap-4">
+					<span class={step.platformHasChanged ? 'text-red-400' : ''}>
+						Pl. {step.platform}
+					</span>
+
+					{#if step.platformHasChanged}
+						<RefreshCw />
+					{/if}
 				</div>
 			{/if}
 		</Item.Content>
 	</Item.Root>
 {/each}
 
-<Item.Root class="sticky bottom-0 mt-5 flex w-screen justify-center p-0 pb-18">
+<Item.Root class="fixed bottom-18 mt-5 flex w-screen justify-center p-0">
 	<div class="inline-block [view-transition-name:journey-btn]">
 		<Button size="sm" href="/connections">back</Button>
 	</div>
