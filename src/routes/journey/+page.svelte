@@ -49,7 +49,7 @@
 					{step.verb}
 				</div>
 
-				<div class="text-xl">
+				<div class="text-3xl">
 					{step.preposition}
 					{step.stationName}
 				</div>
@@ -73,9 +73,11 @@
 					</div>
 				</div>
 
-				<div>
-					Pl. {step.platform}
-				</div>
+				{#if step.platform}
+					<div>
+						Pl. {step.platform}
+					</div>
+				{/if}
 			</Item.Content>
 		</Item.Root>
 	{/each}
