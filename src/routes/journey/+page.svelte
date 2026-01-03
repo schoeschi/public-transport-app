@@ -5,6 +5,7 @@
 
 	import * as Item from '$lib/components/ui/item';
 	import Badge from '$lib/components/ui/badge/badge.svelte';
+	import Button from '$lib/components/ui/button/button.svelte';
 
 	const urlParams = $page.url.searchParams;
 	const id = urlParams.get('id') ?? '';
@@ -80,3 +81,9 @@
 		</Item.Content>
 	</Item.Root>
 {/each}
+
+<Item.Root class="sticky bottom-0 mt-5 flex w-screen justify-center p-0 pb-18">
+	<div class="inline-block [view-transition-name:journey-btn]">
+		<Button size="sm" href="/connections">back</Button>
+	</div>
+</Item.Root>
