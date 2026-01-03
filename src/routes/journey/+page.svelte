@@ -15,7 +15,7 @@
 		return journey ? `${journey.category} ${journey.number}` : 'Walk';
 	};
 
-	const singleStep = (data, verb, preposition, train = null) => ({
+	const singleStep = (data, verb = null, preposition, train = null) => ({
 		verb,
 		preposition,
 		platform: data?.platform,
@@ -27,9 +27,11 @@
 	const steps = [
 		singleStep(sections[0].departure, 'Departure', 'from', getTrainName(sections[0].journey)),
 
-		...sections.slice(1).map((section) => {
-			singleStep(section.departure, 'Change', 'in', getTrainName(section.journey));
-		}),
+		...sections
+			.slice(1)
+			.map((section) =>
+				singleStep(section.departure, 'Change', 'in', getTrainName(section.journey))
+			),
 
 		singleStep(sections.at(-1).arrival, 'Arrival', 'in')
 	];
