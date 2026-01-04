@@ -54,7 +54,7 @@
 				{step.verb}
 			</div>
 
-			<div class="text-3xl">
+			<div class="text-center text-3xl">
 				{step.preposition}
 				{step.stationName}
 			</div>
