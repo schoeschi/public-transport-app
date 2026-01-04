@@ -17,15 +17,18 @@
 		return journey ? `${journey.category} ${journey.number}` : 'Walk';
 	};
 
-	const singleStep = (data, verb = null, preposition, train = null) => ({
-		verb,
-		preposition,
-		platformHasChanged: data?.platform.includes('!') ?? false,
-		platform: data?.platform.replace('!', ''),
-		stationName: data.station.name,
-		timestamp: data.departure ?? data.arrival,
-		train
-	});
+	const singleStep = (data, verb = null, preposition, train = null) => {
+		const platformHasChanged = data?.platform?.includes('!') ?? false;
+		return {
+			verb,
+			preposition,
+			platformHasChanged,
+			platform: platformHasChanged ? data?.platform.replace('!', '') : data?.platform,
+			stationName: data.station.name,
+			timestamp: data.departure ?? data.arrival,
+			train
+		};
+	};
 
 	const steps = [
 		singleStep(sections[0].departure, 'Departure', 'from', getTrainName(sections[0].journey)),
