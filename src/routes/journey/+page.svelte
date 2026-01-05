@@ -47,51 +47,53 @@
 	//
 {/snippet}
 
-{#each steps as step}
-	<Item.Root class="h-svh">
-		<Item.Header class="flex flex-col gap-1">
-			<div class="text-lg font-semibold text-neutral-500 uppercase">
-				{step.verb}
-			</div>
-
-			<div class="text-center text-3xl">
-				{step.preposition}
-				{step.stationName}
-			</div>
-		</Item.Header>
-
-		<Item.Content class="flex flex-col items-center gap-8 text-6xl font-semibold">
-			<!--<Badge variant="destructive">{step.train}</Badge>-->
-			<div class="flex items-center gap-3">
-				<div>
-					<Time timestamp={step.timestamp} format="HH:mm" />
+<div class="h-svh snap-y snap-mandatory overflow-y-scroll">
+	{#each steps as step}
+		<Item.Root class="h-svh snap-start content-center gap-10">
+			<Item.Header class="flex flex-col gap-1">
+				<div class="text-lg font-semibold text-neutral-500 uppercase">
+					{step.verb}
 				</div>
 
-				<div class="flex flex-col text-3xl">
+				<div class="text-center text-3xl">
+					{step.preposition}
+					{step.stationName}
+				</div>
+			</Item.Header>
+
+			<Item.Content class="flex flex-col items-center gap-3 text-6xl font-semibold">
+				<!--<Badge variant="destructive">{step.train}</Badge>-->
+				<div class="flex items-center gap-3">
 					<div>
-						<Time timestamp={step.timestamp} live relative />
+						<Time timestamp={step.timestamp} format="HH:mm" />
 					</div>
 
-					<div>
-						{'on time'}
+					<div class="flex flex-col text-2xl">
+						<div>
+							<Time timestamp={step.timestamp} live relative />
+						</div>
+
+						<div>
+							{'on time'}
+						</div>
 					</div>
 				</div>
-			</div>
 
-			{#if step.platform}
-				<div class="flex items-center gap-4">
-					<span class={step.platformHasChanged ? 'text-red-400' : ''}>
-						Pl. {step.platform}
-					</span>
+				{#if step.platform}
+					<div class="flex items-center gap-4">
+						<span class={step.platformHasChanged ? 'text-red-400' : ''}>
+							Pl. {step.platform}
+						</span>
 
-					{#if step.platformHasChanged}
-						<RefreshCw />
-					{/if}
-				</div>
-			{/if}
-		</Item.Content>
-	</Item.Root>
-{/each}
+						{#if step.platformHasChanged}
+							<RefreshCw />
+						{/if}
+					</div>
+				{/if}
+			</Item.Content>
+		</Item.Root>
+	{/each}
+</div>
 
 <Item.Root class="fixed bottom-18 mt-5 flex w-screen justify-center p-0">
 	<div class="inline-block [view-transition-name:journey-btn]">
