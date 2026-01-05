@@ -70,7 +70,7 @@
 
 					<div class="flex flex-col text-2xl">
 						<div>
-							<Time timestamp={step.timestamp} live relative />
+							<Time timestamp={step.timestamp} live={3 * 1000} relative />
 						</div>
 
 						<div>
