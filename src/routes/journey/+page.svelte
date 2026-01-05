@@ -61,14 +61,14 @@
 				</div>
 			</Item.Header>
 
-			<Item.Content class="flex flex-col items-center gap-3 text-6xl font-semibold">
+			<Item.Content class="flex flex-col items-center gap-3 text-5xl font-semibold">
 				<!--<Badge variant="destructive">{step.train}</Badge>-->
 				<div class="flex items-center gap-3">
 					<div>
 						<Time timestamp={step.timestamp} format="HH:mm" />
 					</div>
 
-					<div class="flex flex-col text-2xl">
+					<div class="flex flex-col text-xl">
 						<div>
 							<Time timestamp={step.timestamp} live={3 * 1000} relative />
 						</div>
