@@ -3,6 +3,7 @@
 	import { apiResponse } from '../../stores/apiResponse.svelte';
 	import { userDirections } from '../../stores/userDirectionsInput.svelte';
 	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
 
 	import * as Item from '$lib/components/ui/item/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
@@ -38,7 +39,9 @@
 		destination = userDirections.to;
 
 		fetchConnections();
+	});
 
+	onMount(() => {
 		window.scrollTo(0, document.body.scrollHeight);
 	});
 
