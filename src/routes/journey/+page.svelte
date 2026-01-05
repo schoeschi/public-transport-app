@@ -49,7 +49,7 @@
 
 <div class="h-svh snap-y snap-mandatory overflow-y-scroll">
 	{#each steps as step}
-		<Item.Root class="h-svh snap-start content-center gap-10">
+		<Item.Root class="h-svh snap-start snap-always content-center gap-10">
 			<Item.Header class="flex flex-col gap-1">
 				<div class="text-lg font-semibold text-neutral-500 uppercase">
 					{step.verb}
