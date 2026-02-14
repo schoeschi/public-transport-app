@@ -1,4 +1,4 @@
-# Pubilic Transport App
+# Public Transport App
 
 This repository holds a public transport web-app for Switzerland made in Svelte using the Public Transport OpenData API.
 
