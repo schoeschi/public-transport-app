@@ -7,6 +7,7 @@
 	import Badge from '$lib/components/ui/badge/badge.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { RefreshCw } from '@lucide/svelte';
+	import TrainLocation from '$lib/components/TrainLocation.svelte';
 
 	const urlParams = $page.url.searchParams;
 	const id = urlParams.get('id') ?? '';
@@ -25,7 +26,9 @@
 			platformHasChanged,
 			platform: platformHasChanged ? data?.platform.replace('!', '') : data?.platform,
 			stationName: data.station.name,
-			timestamp: data.departure ?? data.arrival,
+			departureTimestamp: data.departureTimestamp,
+			arrivalTimestamp: data.arrivalTimestamp,
+			relevantTimestamp: data.departure ?? data.arrival,
 			train
 		};
 	};
@@ -65,31 +68,37 @@
 				<!--<Badge variant="destructive">{step.train}</Badge>-->
 				<div class="flex items-center gap-3">
 					<div>
-						<Time timestamp={step.timestamp} format="HH:mm" />
+						<Time timestamp={step.relevantTimestamp} format="HH:mm" />
 					</div>
 
 					<div class="flex flex-col text-xl">
 						<div>
-							<Time timestamp={step.timestamp} live={3 * 1000} relative />
+							<Time timestamp={step.relevantTimestamp} live={3 * 1000} relative />
 						</div>
 
-						<div>
-							{'on time'}
-						</div>
+						<div>on time</div>
 					</div>
 				</div>
 
-				{#if step.platform}
-					<div class="flex items-center gap-4">
-						<span class={step.platformHasChanged ? 'text-red-400' : ''}>
-							Pl. {step.platform}
-						</span>
+				<div class="flex items-center gap-3">
+					{#if step.platform}
+						<div class="flex items-center gap-4">
+							<span class={step.platformHasChanged ? 'text-red-400' : ''}>
+								Pl. {step.platform}
+							</span>
 
-						{#if step.platformHasChanged}
-							<RefreshCw />
-						{/if}
+							{#if step.platformHasChanged}
+								<RefreshCw />
+							{/if}
+						</div>
+					{/if}
+					<div class="text-xl">
+						<TrainLocation
+							arrivalTimestamp={step.arrivalTimestamp}
+							departureTimestamp={step.departureTimestamp}
+						/>
 					</div>
-				{/if}
+				</div>
 			</Item.Content>
 		</Item.Root>
 	{/each}
